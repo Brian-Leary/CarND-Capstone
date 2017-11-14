@@ -1,60 +1,51 @@
-import rospy
-import math
-from pid import PID
+from yaw_controller import YawController
 from lowpass import LowPassFilter
+from pid import PID
+import time
+import rospy
 
-DEBUG_MODE = True
-GAS_DENSITY = 2.858
-ONE_MPH = 0.44704
+
+ONE_MPH = 0.44704 #1 mph = 0.44704 m/s
+MAX_SPEED = 40.0 #in mph
 
 
 class Controller(object):
     def __init__(self, *args, **kwargs):
-        # TODO: Implement
-        self.vehicle_mass = args[0]
-        self.fuel_capacity = args[1]
-        self.brake_deadband = args[2]
-        self.decel_limit = args[3]
-        self.accel_limit = args[4]
-        self.wheel_radius = args[5]
-        self.wheel_base = args[6]
-        self.steer_ratio = args[7]
-        self.max_lat_accel = args[8]
-        self.max_steer_angle = args[9]
 
-        self.pid_velocity = PID(0.6, 0.05, 0.1)
-        self.pid_steering = PID(6.0, 0.3, 1.0)
-        # pass
+        self.throttle_pid = PID(kwargs['throttleKsOfPid'])
+        self.yaw_control = YawController(kwargs['wheelBase'], kwargs['steerRatio'],
+                                         kwargs['minimumSpeed'], kwargs['maximumLateralAcceleration'],
+                                         kwargs['maximumSteeringAngle'],
+                                         kwargs['steeringKsOfPid']
+                                         )
+        self.lastTime = None
+        self.accelerationLimit = kwargs['accelerationLimit']
+        self.deaccelerationLimit = kwargs['deaccelerationLimit']
+        self.filter = LowPassFilter(0.2,0.1)
 
-    def control(self, *args, **kwargs):
-        """
-        arguments:
-         - proposed linear velocityerr
-         - proposed angular velocity (radians)
-         - current linear velocity
-         - elapsed time
-         - dbw_enabled status
-        """
-        # TODO: Change the arg, kwarg list to suit your needs
-        # Return throttle, brake, steer
-        target_velocity = args[0]
-        target_steering = args[1]
-        current_velocity = args[2]
-        time_elapsed = args[3]
-        dbw_enabled = args[4]
 
-        velocity_error = target_velocity - current_velocity
-        velocity = self.pid_velocity.step(velocity_error, time_elapsed)
+    def control(self, twistCommandLinear, twistCommandAngular, currentVelocityLinear, dbwEnabled):
+        if self.lastTime is None or not dbwEnabled:
+            self.lastTime = rospy.get_time()
+            return 0.0, 0.0, 0.0
 
-        steering_error = target_steering
-        steer = self.pid_steering.step(steering_error, time_elapsed)
+        deltaTime = rospy.get_time() - self.lastTime
 
-        throttle = max(velocity, 0.0)
-        brake = math.fabs(min(0.0, velocity))
+        errorTwistLinear = min(twistCommandLinear.x, MAX_SPEED*ONE_MPH) - currentVelocityLinear.x
+        errorTwistLinear = max(self.deaccelerationLimit*deltaTime, min(self.accelerationLimit*deltaTime, errorTwistLinear))
+        throttle = self.throttle_pid.step(errorTwistLinear, deltaTime)
+        throttle = max(0.0, min(1.0, throttle))
+        if errorTwistLinear < 0:
+            brake = -15.0*errorTwistLinear
+            brake = max(brake, 1.0)
+            throttle = 0.0
+        else:
+            brake = 0.0
 
-        # if DEBUG_MODE:
-        #     rospy.logerr('final velocity: {}'.format(velocity))
-        #     rospy.logerr('final steering: {}'.format(steer))
+        if abs(twistCommandLinear.x) < 0.1:
+            brake = 12.0
 
-        # return 1., 0., 0.
+        steer = self.yaw_control.get_steering(twistCommandLinear.x, twistCommandAngular.z, currentVelocityLinear.x)
+        steer = self.filter.filt(steer)
+        self.lastTime = rospy.get_time()
         return throttle, brake, steer
