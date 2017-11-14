@@ -1,12 +1,12 @@
 ![alt text](https://github.com/https://github.com/TheAisBack/CarND-Capstone/Logo.png "Roadhammer")
 
-| Team Members | Email                    | Role                                  | Slack       | github                         |
-|--------------|--------------------------|---------------------------------------|-------------|--------------------------------|
-| Alan Hekle   | alanhekle@hotmail.com    | Team Leader/Corrections/PEP8/Writeup  | @theaisback | https://github.com/TheAisBack  |
-| Samir Haddad | samir.haddad@outlook.com | TL Detector/Twist Controller          | @sam01      | https://github.com/SamH1       |
-| Kev Lai      | kevlai22@uw.edu          | Waypoint/Twist Controller             | @kevlai     | https://github.com/kevguy      |
-| Brian McHugh | Brian.L.McHugh@gmail.com | Continous Integration/Floater         | @mchugh     | https://github.com/Brian-Leary |
-| Lucas Meyer  | lc_meyer@hotmail.com     | TL Detector/Twist Controller/Waypoint | @lcmeyer    | https://github.com/lcmeyer37   |
+| Team Members | Email                    | Role                                  | Slack       | github                                        |
+|--------------|--------------------------|---------------------------------------|-------------|-----------------------------------------------|
+| Alan Hekle   | alanhekle@hotmail.com    | Team Leader/Corrections/PEP8/Writeup  | @theaisback | [TheAisBack](https://github.com/TheAisBack)   |
+| Samir Haddad | samir.haddad@outlook.com | TL Detector/Twist Controller          | @sam01      | [SamH1](https://github.com/SamH1)             |
+| Kev Lai      | kevlai22@uw.edu          | Waypoint/Twist Controller             | @kevlai     | [kevguy](https://github.com/kevguy)           |
+| Brian McHugh | Brian.L.McHugh@gmail.com | Continous Integration/Floater         | @mchugh     | [Brian-Leary](https://github.com/Brian-Leary) |
+| Lucas Meyer  | lc_meyer@hotmail.com     | TL Detector/Twist Controller/Waypoint | @lcmeyer    | [lcmeyer37](https://github.com/lcmeyer37)     |
 
 This is the project repo for the final project of the Udacity Self-Driving Car Nanodegree: Programming a Real Self-Driving Car. For more information about the project, see the project introduction [here](https://classroom.udacity.com/nanodegrees/nd013/parts/6047fe34-d93c-4f50-8336-b70ef10cb4b2/modules/e1a23b06-329a-4684-a717-ad476f0d8dff/lessons/462c933d-9f24-42d3-8bdc-a08a5fc866e4/concepts/5ab4b122-83e6-436d-850f-9f4d26627fd9).
 
