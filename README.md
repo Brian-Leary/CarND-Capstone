@@ -3,7 +3,7 @@
 
 ![alt text](https://github.com/TheAisBack/CarND-Capstone/blob/master/imgs/self-driving.png "Self-Driving Car")
 
-![alt text](https://github.com/TheAisBack/CarND-Capstone/blob/master/imgs/logo.png "Roadhammer")
+![alt text]<p align="center"><img width="460" height="100" src="https://github.com/TheAisBack/CarND-Capstone/blob/master/imgs/logo.png" "Roadhammer"></p>
 
 | Team Members | Email                    | Role                                        | Slack       | github                                        |
 |--------------|--------------------------|---------------------------------------------|-------------|-----------------------------------------------|
@@ -31,7 +31,7 @@ This is the project repo for the final project of the Udacity Self-Driving Car N
 
 ![alt text](https://github.com/TheAisBack/CarND-Capstone/blob/master/imgs/DBW-Node.png "DBW Node")
 
-### Installation
+# How to Install Software
 
 * Be sure that your workstation is running Ubuntu 16.04 Xenial Xerus or Ubuntu 14.04 Trusty Tahir. [Ubuntu downloads can be found here](https://www.ubuntu.com/download/desktop).
 * If using a Virtual Machine to install Ubuntu, use the following configuration as minimum:
