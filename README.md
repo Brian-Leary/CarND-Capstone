@@ -2,7 +2,7 @@
 ## Programming a Real Self-Driving Car
 
 <p align="center">
-	<img width="200" height="300" src="https://github.com/TheAisBack/CarND-Capstone/blob/master/imgs/self-driving.png">
+	<img width="500" height="300" src="https://github.com/TheAisBack/CarND-Capstone/blob/master/imgs/self-driving.png"><br>
 	<img width="500" height="100" src="https://github.com/TheAisBack/CarND-Capstone/blob/master/imgs/logo.png">
 </p>
 
