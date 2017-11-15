@@ -1,3 +1,8 @@
+# Udacity Final Project
+## Programming a Real Self-Driving Car
+
+![alt text](https://github.com/TheAisBack/CarND-Capstone/blob/master/imgs/self-driving.png "Self-Driving Car")
+
 ![alt text](https://github.com/TheAisBack/CarND-Capstone/blob/master/imgs/logo.png "Roadhammer")
 
 | Team Members | Email                    | Role                                        | Slack       | github                                        |
