@@ -56,16 +56,19 @@ The Waypoint Updater Node purpose is to update the target velocity of each waypo
 Adding the subscirbers and variables that are helpful in generating waypoints for the car.
 
 ### def currentVelocityCallback(self, msg):
-Calls back the current velocity of car
+Calls back the current velocity of the car.
 
 ### def currentPoseCallback(self, msg):
+Calls back the current position of the car.
 
 ### def baseWaypointsCallback(self, msg):
+Calls back the current base way points of the car.
 
 ### def trafficStateCallback(self, msg):
+Calls back the traffic light states for the car. This helps the car in knowing when to stop or go.
 
 ### def publishNextWaypoints(self):
-This function is the most important code of the waypoint_updater. This code helps in publishing the waypoints for the car to move forward
+This function is the most important code of the waypoint_updater. This code helps in publishing the waypoints for the car. The code looks at the current position, finding the closest waypoint, checking the traffic lights, the current velocity of the car, preventing the car from hitting a vehicle, limiting the car distance from other cars and imposing the velocity for the car.
 
 # Twist Controller
 
