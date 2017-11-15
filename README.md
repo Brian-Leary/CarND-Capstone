@@ -64,9 +64,7 @@ With the DBW node established in the code, the twist controller is the code that
 This init function is important to point out as we are establishing the yaw_control (speed, steering, etc.), as well as, the deceleration and acceleration.
 
 ### def control(self, *args, **kwargs):
-The
-        # TODO: Change the arg, kwarg list to suit your needs
-        # Return throttle, brake, steer
+This function changes the arguments of throttle, brake and steer to your liking.
 
 # How to Install Software
 
