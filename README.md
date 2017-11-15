@@ -6,19 +6,19 @@
 	<img width="550" height="100" src="https://github.com/TheAisBack/CarND-Capstone/blob/master/imgs/logo.png">
 </p>
 
-| Team Members | Email                    | Role                                        | Slack       | github                                        |
-|--------------|--------------------------|---------------------------------------------|-------------|-----------------------------------------------|
-| Alan Hekle   | alanhekle@hotmail.com    | Team Leader / Corrections / PEP8 / Writeup  | @theaisback | [TheAisBack](https://github.com/TheAisBack)   |
-| Samir Haddad | samir.haddad@outlook.com | TL Detector / Twist Controller              | @sam01      | [SamH1](https://github.com/SamH1)             |
-| Kev Lai      | kevlai22@uw.edu          | Waypoint / Twist Controller                 | @kevlai     | [kevguy](https://github.com/kevguy)           |
-| Brian McHugh | Brian.L.McHugh@gmail.com | Continous Integration / Floater             | @mchugh     | [Brian-Leary](https://github.com/Brian-Leary) |
-| Lucas Meyer  | lc_meyer@hotmail.com     | TL Detector / Twist Controller/ Waypoint    | @lcmeyer    | [lcmeyer37](https://github.com/lcmeyer37)     |
+| Team Members | Email                    | Role                                         | Slack       | github                                        |
+|--------------|--------------------------|----------------------------------------------|-------------|-----------------------------------------------|
+| Alan Hekle   | alanhekle@hotmail.com    | Team Leader / Corrections / PEP8 / Write-up  | @theaisback | [TheAisBack](https://github.com/TheAisBack)   |
+| Samir Haddad | samir.haddad@outlook.com | TL Detector / Twist Controller               | @sam01      | [SamH1](https://github.com/SamH1)             |
+| Kev Lai      | kevlai22@uw.edu          | Waypoint / Twist Controller                  | @kevlai     | [kevguy](https://github.com/kevguy)           |
+| Brian McHugh | Brian.L.McHugh@gmail.com | Continous Integration / Floater              | @mchugh     | [Brian-Leary](https://github.com/Brian-Leary) |
+| Lucas Meyer  | lc_meyer@hotmail.com     | TL Detector / Twist Controller/ Waypoint     | @lcmeyer    | [lcmeyer37](https://github.com/lcmeyer37)     |
 
 This is the project repo for the final project of the Udacity Self-Driving Car Nanodegree: Programming a Real Self-Driving Car. For more information about the project, see the project introduction [here](https://classroom.udacity.com/nanodegrees/nd013/parts/6047fe34-d93c-4f50-8336-b70ef10cb4b2/modules/e1a23b06-329a-4684-a717-ad476f0d8dff/lessons/462c933d-9f24-42d3-8bdc-a08a5fc866e4/concepts/5ab4b122-83e6-436d-850f-9f4d26627fd9).
 
 # Final Project
 
-Here is the architecture diagram of the self-driving car, which we will be using to create the software to run the car.
+Here is the architecture diagram of the self-driving car, which will help us create the software to run the actual car.
 
 <p align="center">
 	<img src="https://github.com/TheAisBack/CarND-Capstone/blob/master/imgs/Final-Poject-ROS.png">
@@ -54,14 +54,14 @@ The Waypoint Updater Node purpose is to update the target velocity of each waypo
 
 # Twist Controller
 
-
+With the DBW node established in the code, the twist controller is the code that needed to be edited, however, these two files are very important since they are responsible for controlling the vehicle. The dbw_node subscribes to the current_velocity, twist_cmd and the dbw_enabled. These three topics receive the vehicles linear and angular velocities, as well as, the drivers control. The node will then publish this information to the throttle_cmd, steering_cmd and the brake_cmd.
 
 <p align="center">
 	<img src="https://github.com/TheAisBack/CarND-Capstone/blob/master/imgs/DBW-Node.png">
 </p>
 
 ### def __init__(self, *args, **kwargs):
-This init function is important to point out as we are establishing the yaw_control (speed, steering, etc.), as well as, the decceleration and acceleration.
+This init function is important to point out as we are establishing the yaw_control (speed, steering, etc.), as well as, the deceleration and acceleration.
 
 ### def control(self, *args, **kwargs):
 The
