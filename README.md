@@ -84,6 +84,15 @@ This init function is important to point out as we are establishing the yaw_cont
 ### def control(self, *args, **kwargs):
 This function changes the arguments of throttle, brake and steer to your liking.
 
+# Perception, Planning, Control
+
+# Simulator Output
+
+# Real Life Output
+
+# Conclusion
+The final Product
+
 # How to Install Software
 
 * Be sure that your workstation is running Ubuntu 16.04 Xenial Xerus or Ubuntu 14.04 Trusty Tahir.

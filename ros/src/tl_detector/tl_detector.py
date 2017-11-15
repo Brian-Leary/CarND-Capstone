@@ -30,10 +30,8 @@ class TLDetector(object):
         self.camera_image = None
         self.lights = []
 
-        sub1 = rospy.Subscriber('/current_pose', PoseStamped,
-                                self.currentPoseCallback)
-        sub2 = rospy.Subscriber('/base_waypoints', Lane,
-                                self.baseWaypointsCallback)
+        sub1 = rospy.Subscriber('/current_pose', PoseStamped, self.currentPoseCallback)
+        sub2 = rospy.Subscriber('/base_waypoints', Lane, self.baseWaypointsCallback)
 
         '''
         /vehicle/traffic_lights provides you with the location
@@ -45,10 +43,8 @@ class TLDetector(object):
         of the light and the camera image to predict it.
 
         '''
-        sub3 = rospy.Subscriber('/vehicle/traffic_lights', TrafficLightArray,
-                                self.trafficLightsCallback)
-        sub6 = rospy.Subscriber('/image_color', Image, self.imageColorCallback,
-                                queue_size=1, buff_size=2*52428800)  # extended
+        sub3 = rospy.Subscriber('/vehicle/traffic_lights', TrafficLightArray, self.trafficLightsCallback)
+        sub6 = rospy.Subscriber('/image_color', Image, self.imageColorCallback, queue_size=1, buff_size=2*52428800)  # extended
 
         config_string = rospy.get_param("/traffic_light_config")
         self.config = yaml.load(config_string)
@@ -56,10 +52,7 @@ class TLDetector(object):
         # Not being used. /all_traffic_waypoint publishes status for all
         # traffic lights present. self.upcoming_red_light_pub =
         # rospy.Publisher('/traffic_waypoint', Int32, queue_size=1)
-        self.upcoming_traffic_light_pub =
-        rospy.Publisher('/all_traffic_waypoint',
-                        TrafficLightTwo,
-                        queue_size=1)
+        self.upcoming_traffic_light_pub = rospy.Publisher('/all_traffic_waypoint', TrafficLightTwo, queue_size=1)
 
         self.bridge = CvBridge()
         self.light_classifier = TLClassifier(threshold)
@@ -159,8 +152,7 @@ class TLDetector(object):
         for i, waypoint in enumerate(self.waypoints):
             waypointPositionX = waypoint.pose.pose.position.x
             waypointPositionY = waypoint.pose.pose.position.y
-            distanceCalculated = math.sqrt((positionX - waypointPositionX)**2 +
-                                           (positionY - waypointPositionY)**2)
+            distanceCalculated = math.sqrt((positionX - waypointPositionX)**2 + (positionY - waypointPositionY)**2)
             if (distanceCalculated < minimumDistance):
                 minimumDistanceIndex = i
                 minimumDistance = distanceCalculated
@@ -202,8 +194,7 @@ class TLDetector(object):
         # Finds the light being processed at the moment, by calculating
         # its distance to the other traffic lights provided
         for tl in self.lights:
-            dist = math.sqrt((tl.pose.pose.position.x - light.position.x)**2 +
-                             (tl.pose.pose.position.y - light.position.y)**2)
+            dist = math.sqrt((tl.pose.pose.position.x - light.position.x)**2 + (tl.pose.pose.position.y - light.position.y)**2)
             if (dist < 50):
                 currentTrafficLightState = tl.state
                 # once traffic light is found on the list, pass its state
@@ -212,8 +203,7 @@ class TLDetector(object):
 
         # Finds localization of the traffic light on the image inputted.
         img_full_np = np.asarray(processed_img, dtype="uint8")
-        trafficLightBox =
-        self.light_classifier.locateTrafficLightsOnFrame(img_full_np)
+        trafficLightBox = self.light_classifier.locateTrafficLightsOnFrame(img_full_np)
 
         # 2 - Use localization of traffic light for classification
         # of its light current state
@@ -227,10 +217,7 @@ class TLDetector(object):
         else:
             # resize image of the traffic box to 32x32 pixels,
             # for counting of Red, Yellow and Green pixels for classification
-            img_np = cv2.resize(processed_img[trafficLightBox[0]:
-                                              trafficLightBox[2],
-                                              trafficLightBox[1]:
-                                              trafficLightBox[3]], (32, 32))
+            img_np = cv2.resize(processed_img[trafficLightBox[0]:trafficLightBox[2], trafficLightBox[1]:trafficLightBox[3]], (32, 32))
             self.light_classifier.classifyTrafficLightState(img_np)
             light_state = self.light_classifier.signal_status
 
@@ -280,8 +267,7 @@ class TLDetector(object):
                             light = lightStopPose
 
         if ((car_position is not None) and (closeTLStopWaypoint is not None)):
-                distanceToTrafficLight = abs(car_position -
-                                             closeTLStopWaypoint)
+                distanceToTrafficLight = abs(car_position - closeTLStopWaypoint)
             # rospy.loginfo("Nearest traffic light position
             # is %s", closeTLStopWaypoint)
 

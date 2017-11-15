@@ -27,40 +27,23 @@ class DBWNode(object):
         max_lat_accel = rospy.get_param('~max_lat_accel', 3.)
         max_steer_angle = rospy.get_param('~max_steer_angle', 8.)
 
-        throttle_ksofpid = KsOfPid(rospy.get_param('~throttle_Kp', 0.0),
-                                   rospy.get_param('~throttle_Ki', 0.0),
-                                   rospy.get_param('~throttle_Kd', 0.0))
-        steering_ksofpid = KsOfPid(rospy.get_param('~steering_Kp', 0.0),
-                                   rospy.get_param('~steering_Ki', 0.0),
-                                   rospy.get_param('~steering_Kd', 0.0))
+        throttle_ksofpid = KsOfPid(rospy.get_param('~throttle_Kp', 0.0), rospy.get_param('~throttle_Ki', 0.0), rospy.get_param('~throttle_Kd', 0.0))
+        steering_ksofpid = KsOfPid(rospy.get_param('~steering_Kp', 0.0), rospy.get_param('~steering_Ki', 0.0), rospy.get_param('~steering_Kd', 0.0))
 
         # Publishers
-        self.steer_pub = rospy.Publisher('/vehicle/steering_cmd',
-                                         SteeringCmd, queue_size=1)
-        self.throttle_pub = rospy.Publisher('/vehicle/throttle_cmd',
-                                            ThrottleCmd, queue_size=1)
-        self.brake_pub = rospy.Publisher('/vehicle/brake_cmd',
-                                         BrakeCmd, queue_size=1)
+        self.steer_pub = rospy.Publisher('/vehicle/steering_cmd', SteeringCmd, queue_size=1)
+        self.throttle_pub = rospy.Publisher('/vehicle/throttle_cmd', ThrottleCmd, queue_size=1)
+        self.brake_pub = rospy.Publisher('/vehicle/brake_cmd', BrakeCmd, queue_size=1)
 
         # TODO: Pass params to `Controller` constructor
         # self.controller = TwistController(<Arguments you wish to provide>)
         minSpeed = 1.0 * 0.447
-        self.controller = Controller(wheelBase=wheel_base,
-                                     steerRatio=steer_ratio,
-                                     minimumSpeed=minSpeed,
-                                     maximumLateralAcceleration=max_lat_accel,
-                                     maximumSteeringAngle=max_steer_angle,
-                                     throttleKsOfPid=throttle_ksofpid,
-                                     steeringKsOfPid=steering_ksofpid,
-                                     accelerationLimit=accel_limit,
-                                     deaccelerationLimit=decel_limit)
+        self.controller = Controller(wheelBase=wheel_base, steerRatio=steer_ratio, minimumSpeed=minSpeed, maximumLateralAcceleration=max_lat_accel, maximumSteeringAngle=max_steer_angle, throttleKsOfPid=throttle_ksofpid, steeringKsOfPid=steering_ksofpid, accelerationLimit=accel_limit, deaccelerationLimit=decel_limit)
 
         # Subscriptions
         rospy.Subscriber('/dbw_enabled', Bool, self.dbwEnabledCallback)
-        rospy.Subscriber('/current_velocity', TwistStamped,
-                         self.currentVelocityCallback, queue_size=1)
-        rospy.Subscriber('/twist_cmd', TwistStamped, self.twistCommandCallback,
-                         queue_size=1)
+        rospy.Subscriber('/current_velocity', TwistStamped, self.currentVelocityCallback, queue_size=1)
+        rospy.Subscriber('/twist_cmd', TwistStamped, self.twistCommandCallback, queue_size=1)
 
         # Member vars
         self.dbwEnabled = True
@@ -82,11 +65,7 @@ class DBWNode(object):
                 steering_cmd as ThrottleCmd, BrakeCmd and SteeringCmd types of
                 messages
             '''
-            throttle, brake, steering = self.controller.control(
-                self.twistCommand.twist.linear,
-                self.twistCommand.twist.angular,
-                self.currentVelocity.twist.linear,
-                self.dbwEnabled)
+            throttle, brake, steering = self.controller.control(self.twistCommand.twist.linear, self.twistCommand.twist.angular, self.currentVelocity.twist.linear, self.dbwEnabled)
 
             if self.dbwEnabled:
                 self.publish(throttle, brake, steering)

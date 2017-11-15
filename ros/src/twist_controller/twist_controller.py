@@ -14,13 +14,7 @@ class Controller(object):
     def __init__(self, *args, **kwargs):
 
         self.throttle_pid = PID(kwargs['throttleKsOfPid'])
-        self.yaw_control = YawController(kwargs['wheelBase'],
-                                         kwargs['steerRatio'],
-                                         kwargs['minimumSpeed'],
-                                         kwargs['maximumLateralAcceleration'],
-                                         kwargs['maximumSteeringAngle'],
-                                         kwargs['steeringKsOfPid']
-                                         )
+        self.yaw_control = YawController(kwargs['wheelBase'], kwargs['steerRatio'], kwargs['minimumSpeed'], kwargs['maximumLateralAcceleration'], kwargs['maximumSteeringAngle'], kwargs['steeringKsOfPid'])
         self.lastTime = None
         self.accelerationLimit = kwargs['accelerationLimit']
         self.deaccelerationLimit = kwargs['deaccelerationLimit']
@@ -34,11 +28,8 @@ class Controller(object):
 
         deltaTime = rospy.get_time() - self.lastTime
 
-        errorTwistLinear = min(twistCommandLinear.x, MAX_SPEED*ONE_MPH) -
-        currentVelocityLinear.x
-        errorTwistLinear = max(self.deaccelerationLimit*deltaTime,
-                               min(self.accelerationLimit*deltaTime,
-                                   errorTwistLinear))
+        errorTwistLinear = min(twistCommandLinear.x, MAX_SPEED*ONE_MPH) - currentVelocityLinear.x
+        errorTwistLinear = max(self.deaccelerationLimit*deltaTime, min(self.accelerationLimit*deltaTime, errorTwistLinear))
         throttle = self.throttle_pid.step(errorTwistLinear, deltaTime)
         throttle = max(0.0, min(1.0, throttle))
         if errorTwistLinear < 0:
@@ -51,9 +42,7 @@ class Controller(object):
         if abs(twistCommandLinear.x) < 0.1:
             brake = 12.0
 
-        steer = self.yaw_control.get_steering(twistCommandLinear.x,
-                                              twistCommandAngular.z,
-                                              currentVelocityLinear.x)
+        steer = self.yaw_control.get_steering(twistCommandLinear.x, twistCommandAngular.z, currentVelocityLinear.x)
         steer = self.filter.filt(steer)
         self.lastTime = rospy.get_time()
         return throttle, brake, steer

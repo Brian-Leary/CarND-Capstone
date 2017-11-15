@@ -29,19 +29,14 @@ class WaypointUpdater(object):
 
         rospy.init_node('waypoint_updater')
 
-        rospy.Subscriber('/current_pose', PoseStamped,
-                         self.currentPoseCallback, queue_size=1,
-                         buff_size=512*1024)
+        rospy.Subscriber('/current_pose', PoseStamped, self.currentPoseCallback, queue_size=1, buff_size=512*1024)
         rospy.Subscriber('/base_waypoints', Lane, self.baseWaypointsCallback)
-        rospy.Subscriber('/all_traffic_waypoint', TrafficLightTwo,
-                         self.trafficStateCallback)
-        rospy.Subscriber('/current_velocity', TwistStamped,
-                         self.currentVelocityCallback, queue_size=1)
+        rospy.Subscriber('/all_traffic_waypoint', TrafficLightTwo, self.trafficStateCallback)
+        rospy.Subscriber('/current_velocity', TwistStamped, self.currentVelocityCallback, queue_size=1)
 
         self.simulationTesting = bool(rospy.get_param("~sim_testing", True))
 
-        self.final_waypoints_pub = rospy.Publisher('final_waypoints', Lane,
-                                                   queue_size=1)
+        self.final_waypoints_pub = rospy.Publisher('final_waypoints', Lane, queue_size=1)
 
         # Waypoints on the road (waypoints)
         self.waypoints = None
@@ -84,15 +79,13 @@ class WaypointUpdater(object):
         subscriber
     '''
     def trafficStateCallback(self, msg):
-        if ((self.nextTrafficLightWaypointIndex is None) and
-           (msg.waypoint == -1)):
+        if ((self.nextTrafficLightWaypointIndex is None) and (msg.waypoint == -1)):
             return
 
         self.nextTrafficLightWaypointIndex = msg.waypoint
         self.nextTrafficLightState = msg.state
 
-        if ((msg.state == TrafficLight.RED) or
-           (msg.state == TrafficLight.YELLOW)):
+        if ((msg.state == TrafficLight.RED) or (msg.state == TrafficLight.YELLOW)):
             self.redLightWaypoint = msg.waypoint
         else:
             self.redLightWaypoint = -1
@@ -108,9 +101,7 @@ class WaypointUpdater(object):
 
         # CHECK IF THERE IS SOME INCONSISTENCY WITH SOME VARIABLE
         # BEFORE PROCEEDING
-        if self.waypoints is None or self.currentVelocity is None or
-        self.currentPose is None or self.nextTrafficLightWaypointIndex is
-        None or self.redLightWaypoint is None:
+        if self.waypoints is None or self.currentVelocity is None or self.currentPose is None or self.nextTrafficLightWaypointIndex is None or self.redLightWaypoint is None:
             return
 
         # CALCULATING CLOSEST WAYPOINT TO THE VEHICLE
@@ -127,8 +118,7 @@ class WaypointUpdater(object):
         # Check if it is running in simulation mode
         if self.simulationTesting and self.closestWaypointIndex is not None:
             startIndexWaypoints = self.closestWaypointIndex - 30
-            endIndexWaypoints = min(endIndexWaypoints,
-                                    self.closestWaypointIndex + 30)
+            endIndexWaypoints = min(endIndexWaypoints, self.closestWaypointIndex + 30)
 
         ''' simple for loop for calculation of distance between current car
             position and waypoints provided, to find closest waypoint to the
@@ -138,8 +128,7 @@ class WaypointUpdater(object):
             waypoint = self.waypoints[i]
             waypointsPosX = waypoint.pose.pose.position.x
             waypointsPosY = waypoint.pose.pose.position.y
-            distanceCalculated = math.sqrt((carPositionX - waypointsPosX)**2 +
-                                           (carPositionY - waypointsPosY)**2)
+            distanceCalculated = math.sqrt((carPositionX - waypointsPosX)**2 + (carPositionY - waypointsPosY)**2)
 
             if distanceCalculated < minimumDistance:
                 minimumDistance = distanceCalculated
@@ -148,9 +137,7 @@ class WaypointUpdater(object):
         closestWaypoint = self.waypoints[minimumDistanceIndex]
         closestWaypointPosition = closestWaypoint.pose.pose.position
         self.closestWaypointIndex = minimumDistanceIndex
-        rospy.loginfo("Running... [Closest Waypoint calculated: index %d, " +
-                      "positionX %f, positionY %f]", minimumDistanceIndex,
-                      closestWaypointPosition.x, closestWaypointPosition.y)
+        rospy.loginfo("Running... [Closest Waypoint calculated: index %d, positionX %f, positionY %f]", minimumDistanceIndex, closestWaypointPosition.x, closestWaypointPosition.y)
 
         # GENERATE WAYPOINTS AND PUBLISH THEM BASED ON TRAFFIC LIGHT
         # CLASSIFICATIONS
@@ -160,32 +147,25 @@ class WaypointUpdater(object):
             it starts with the waypoint that's closest to the vehicle,
             plus the number of waypoints desired to be published (ex: 200)
         '''
-        nextWaypoints = list(islice(cycle(self.waypoints),
-                                    minimumDistanceIndex,
-                                    minimumDistanceIndex +
-                                    numberOfWaypointsToPublish - 1))
+        nextWaypoints = list(islice(cycle(self.waypoints), minimumDistanceIndex, minimumDistanceIndex + numberOfWaypointsToPublish - 1))
 
         currentVelocity = closestWaypoint.twist.twist.linear.x
-        numberWaypointsToTF = self.nextTrafficLightWaypointIndex -
-        minimumDistanceIndex
+        numberWaypointsToTF = self.nextTrafficLightWaypointIndex - minimumDistanceIndex
 
         isTrafficLightNear = numberWaypointsToTF < numWayPointsDeaccelTF
-        isRedTrafficLightNear = (self.redLightWaypoint != -1 and
-                                 isTrafficLightNear)
+        isRedTrafficLightNear = (self.redLightWaypoint != -1 and isTrafficLightNear)
 
         ''' Check if red traffic light is too close to the vehicle, if it is
             unconsider publishing further waypoints at the moment
         '''
-        if isRedTrafficLightNear and
-        self.redLightWaypoint <= minimumDistanceIndex:
+        if isRedTrafficLightNear and self.redLightWaypoint <= minimumDistanceIndex:
             return
 
         # Otherwise, iterate through the next waypoints list
         for i in range(len(nextWaypoints) - 1):
 
             securityMargin = 15
-            waypointToGo = self.nextTrafficLightWaypointIndex -
-            minimumDistanceIndex - i - securityMargin
+            waypointToGo = self.nextTrafficLightWaypointIndex - minimumDistanceIndex - i - securityMargin
 
             # If red traffic light is not near the car
             if not isRedTrafficLightNear:
@@ -194,8 +174,7 @@ class WaypointUpdater(object):
                     (larger than 3mph) and the waypointToGo calculated is
                     in the close range of the car
                 '''
-                if velocityX > 3 * ONE_MPH and waypointToGo < 30 and
-                waypointToGo > 0:
+                if velocityX > 3 * ONE_MPH and waypointToGo < 30 and waypointToGo > 0:
                     # Change car speed to 5mph
                     nextWaypoints[i].twist.twist.linear.x = 5 * ONE_MPH
                 ''' Else, if the waypointToGo is not in a close range,
@@ -221,9 +200,7 @@ class WaypointUpdater(object):
                     of change of speed.
                 '''
                 else:
-                    newVelocity = maximumSpeed -
-                    (numWayPointsDeaccelTF - waypointToGo) *
-                    (maximumSpeed / numWayPointsDeaccelTF)
+                    newVelocity = maximumSpeed - (numWayPointsDeaccelTF - waypointToGo) * (maximumSpeed / numWayPointsDeaccelTF)
                 if newVelocity < 0.1:
                     newVelocity = 0
 
