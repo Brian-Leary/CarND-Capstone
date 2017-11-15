@@ -18,7 +18,9 @@ This is the project repo for the final project of the Udacity Self-Driving Car N
 
 # Final Project
 
-![alt text](https://github.com/TheAisBack/CarND-Capstone/blob/master/imgs/Final-Poject-ROS.png "Final Project ROS")
+<p align="center">
+	<img src="https://github.com/TheAisBack/CarND-Capstone/blob/master/imgs/Final-Poject-ROS.png">
+</p>
 
 # Traffic Light Detector
 
@@ -40,8 +42,10 @@ This is the project repo for the final project of the Udacity Self-Driving Car N
 
 # How to Install Software
 
-* Be sure that your workstation is running Ubuntu 16.04 Xenial Xerus or Ubuntu 14.04 Trusty Tahir. [Ubuntu downloads can be found here](https://www.ubuntu.com/download/desktop).
+* Be sure that your workstation is running Ubuntu 16.04 Xenial Xerus or Ubuntu 14.04 Trusty Tahir.
+  [Ubuntu downloads can be found here](https://www.ubuntu.com/download/desktop).
 * If using a Virtual Machine to install Ubuntu, use the following configuration as minimum:
+  [Virtual Box](https://www.virtualbox.org/wiki/Downloads)
   * 2 CPU
   * 2 GB system memory
   * 25 GB of free hard drive space
