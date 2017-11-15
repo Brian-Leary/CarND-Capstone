@@ -28,6 +28,11 @@ This is the project repo for the final project of the Udacity Self-Driving Car N
 	<img src="https://github.com/TheAisBack/CarND-Capstone/blob/master/imgs/TL-Detector.png">
 </p>
 
+### def get_closest_waypoint(self, pose):
+
+### def process_traffic_lights(self):
+This function helps in establishing where the closest visible traffic light is located, if the traffic light exist. Once the traffic light is found the function returns the state of that traffic light.
+
 # Waypoint Updater
 
 <p align="center">
@@ -59,14 +64,15 @@ This is the project repo for the final project of the Udacity Self-Driving Car N
   * Use this option to install the SDK on a workstation that already has ROS installed: [One Line SDK Install (binary)](https://bitbucket.org/DataspeedInc/dbw_mkz_ros/src/81e63fcc335d7b64139d7482017d6a97b405e250/ROS_SETUP.md?fileviewer=file-view-default)
 * Download the [Udacity Simulator](https://github.com/udacity/CarND-Capstone/releases/tag/v1.2).
 
-### Docker Installation
+# Docker Installation
 [Install Docker](https://docs.docker.com/engine/installation/)
 
 Build the docker container
 ```bash
 docker build . -t capstone
 ```
-If docker build . -t capstone does not work type...
+
+If the above terminal code does not work type...
 ```bash
 sudo docker build . -t capstone
 ```
@@ -76,7 +82,7 @@ Run the docker file
 docker run -p 4567:4567 -v $PWD:/capstone -v /tmp/log:/root/.ros/ --rm -it capstone
 ```
 
-### Usage
+# Usage
 
 1. Clone the project repository
 ```bash
@@ -97,7 +103,7 @@ roslaunch launch/styx.launch
 ```
 4. Run the simulator
 
-### Real world testing
+# Real world testing
 1. Download [training bag](https://drive.google.com/file/d/0B2_h37bMVw3iYkdJTlRSUlJIamM/view?usp=sharing) that was recorded on the Udacity self-driving car (a bag demonstraing the correct predictions in autonomous mode can be found [here](https://drive.google.com/open?id=0B2_h37bMVw3iT0ZEdlF4N01QbHc))
 2. Unzip the file
 ```bash
