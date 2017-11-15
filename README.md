@@ -3,7 +3,6 @@
 
 <p align="center">
 	<img width="650" height="450" src="https://github.com/TheAisBack/CarND-Capstone/blob/master/imgs/self-driving.png"><br>
-  Team Name <br>
 	<img width="550" height="100" src="https://github.com/TheAisBack/CarND-Capstone/blob/master/imgs/logo.png">
 </p>
 
@@ -52,6 +51,21 @@ The Waypoint Updater Node purpose is to update the target velocity of each waypo
 <p align="center">
 	<img src="https://github.com/TheAisBack/CarND-Capstone/blob/master/imgs/Waypoint-Updater.png"><br>
 </p>
+
+### def __init__(self):
+Adding the subscirbers and variables that are helpful in generating waypoints for the car.
+
+### def currentVelocityCallback(self, msg):
+Calls back the current velocity of car
+
+### def currentPoseCallback(self, msg):
+
+### def baseWaypointsCallback(self, msg):
+
+### def trafficStateCallback(self, msg):
+
+### def publishNextWaypoints(self):
+This function is the most important code of the waypoint_updater. This code helps in publishing the waypoints for the car to move forward
 
 # Twist Controller
 
