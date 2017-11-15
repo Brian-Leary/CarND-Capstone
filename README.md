@@ -2,7 +2,7 @@
 ## Programming a Real Self-Driving Car
 
 <p align="center">
-	<img width="600" height="450" src="https://github.com/TheAisBack/CarND-Capstone/blob/master/imgs/self-driving.png"><br>
+	<img width="650" height="450" src="https://github.com/TheAisBack/CarND-Capstone/blob/master/imgs/self-driving.png"><br>
 	<img width="550" height="100" src="https://github.com/TheAisBack/CarND-Capstone/blob/master/imgs/logo.png">
 </p>
 
@@ -22,15 +22,21 @@ This is the project repo for the final project of the Udacity Self-Driving Car N
 
 # Traffic Light Detector
 
-![alt text](https://github.com/TheAisBack/CarND-Capstone/blob/master/imgs/TL-Detector.png "TL Detector")
+<p align="center">
+	<img src="https://github.com/TheAisBack/CarND-Capstone/blob/master/imgs/TL-Detector.png">
+</p>
 
 # Waypoint Updater
 
-![alt text](https://github.com/TheAisBack/CarND-Capstone/blob/master/imgs/Waypoint-Updater.png "Waypoint Updater")
+<p align="center">
+	<img src="https://github.com/TheAisBack/CarND-Capstone/blob/master/imgs/Waypoint-Updater.png"><br>
+</p>
 
 # Twist Controller
 
-![alt text](https://github.com/TheAisBack/CarND-Capstone/blob/master/imgs/DBW-Node.png "DBW Node")
+<p align="center">
+	<img src="https://github.com/TheAisBack/CarND-Capstone/blob/master/imgs/DBW-Node.png">
+</p>
 
 # How to Install Software
 
