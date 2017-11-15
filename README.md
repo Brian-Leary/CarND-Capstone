@@ -18,13 +18,15 @@ This is the project repo for the final project of the Udacity Self-Driving Car N
 
 # Final Project
 
-Here is the archetect of the self-driving car
+Here is the architecture diagram of the self-driving car, which we will be using to create the software to run the car.
 
 <p align="center">
 	<img src="https://github.com/TheAisBack/CarND-Capstone/blob/master/imgs/Final-Poject-ROS.png">
 </p>
 
 # Traffic Light Detector
+
+The Traffic Light Detector Node contains data from image_color, current_pose and base_waypoints. This node then publishes these locations to the traffic_waypoint, so that the car knows where these traffic lights are. The following image below describes these steps.
 
 <p align="center">
 	<img src="https://github.com/TheAisBack/CarND-Capstone/blob/master/imgs/TL-Detector.png">
@@ -40,9 +42,11 @@ This function finds the closet waypoint for the car, this will help the vehicle 
 This function helps to establish which light states which action the car shall do.
 
 ### def process_traffic_lights(self):
-This function helps in establishing where the closest visible traffic light is located, if the traffic light exist. Once the traffic light is found the function returns the state of that traffic light.
+This function helps in establishing where the closest visible traffic light is located, if the traffic light exist.
 
 # Waypoint Updater
+
+The Waypoint Updater Node purpose is to update the target velocity of each waypoint which bases this information off of the traffic light and obstacle detection data. The node takes the data from base_waypoints, current_pose, obstacle_waypoints and traffic_waypoints and publishes these waypoints to the final waypoints. The following image below describes these steps.
 
 <p align="center">
 	<img src="https://github.com/TheAisBack/CarND-Capstone/blob/master/imgs/Waypoint-Updater.png"><br>
@@ -50,9 +54,19 @@ This function helps in establishing where the closest visible traffic light is l
 
 # Twist Controller
 
+
+
 <p align="center">
 	<img src="https://github.com/TheAisBack/CarND-Capstone/blob/master/imgs/DBW-Node.png">
 </p>
+
+### def __init__(self, *args, **kwargs):
+This init function is important to point out as we are establishing the yaw_control (speed, steering, etc.), as well as, the decceleration and acceleration.
+
+### def control(self, *args, **kwargs):
+The
+        # TODO: Change the arg, kwarg list to suit your needs
+        # Return throttle, brake, steer
 
 # How to Install Software
 
