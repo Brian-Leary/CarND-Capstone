@@ -66,6 +66,10 @@ Build the docker container
 ```bash
 docker build . -t capstone
 ```
+If docker build . -t capstone does not work type...
+```bash
+sudo docker build . -t capstone
+```
 
 Run the docker file
 ```bash
