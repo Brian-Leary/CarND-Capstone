@@ -8,9 +8,9 @@ import math
 import collections
 from twist_controller import Controller
 
+# Data structure for holding PID gains
+KsOfPid = collections.namedtuple('KsOfPid', 'Kp Ki Kd')
 
-
-KsOfPid = collections.namedtuple('KsOfPid', 'Kp Ki Kd')  # Data structure for holding PID gains
 
 class DBWNode(object):
     def __init__(self):
@@ -28,11 +28,11 @@ class DBWNode(object):
         max_steer_angle = rospy.get_param('~max_steer_angle', 8.)
 
         throttle_ksofpid = KsOfPid(rospy.get_param('~throttle_Kp', 0.0),
-                               rospy.get_param('~throttle_Ki', 0.0),
-                               rospy.get_param('~throttle_Kd', 0.0))
+                                   rospy.get_param('~throttle_Ki', 0.0),
+                                   rospy.get_param('~throttle_Kd', 0.0))
         steering_ksofpid = KsOfPid(rospy.get_param('~steering_Kp', 0.0),
-                               rospy.get_param('~steering_Ki', 0.0),
-                               rospy.get_param('~steering_Kd', 0.0))
+                                   rospy.get_param('~steering_Ki', 0.0),
+                                   rospy.get_param('~steering_Kd', 0.0))
 
         # Publishers
         self.steer_pub = rospy.Publisher('/vehicle/steering_cmd',
@@ -44,16 +44,23 @@ class DBWNode(object):
 
         # TODO: Pass params to `Controller` constructor
         # self.controller = TwistController(<Arguments you wish to provide>)
-        minSpeed=1.0*0.447
-        self.controller = Controller(wheelBase=wheel_base, steerRatio=steer_ratio, minimumSpeed=minSpeed,
-                                     maximumLateralAcceleration=max_lat_accel, maximumSteeringAngle=max_steer_angle,
-                                     throttleKsOfPid=throttle_ksofpid, steeringKsOfPid=steering_ksofpid,
-                                     accelerationLimit=accel_limit, deaccelerationLimit=decel_limit)
+        minSpeed = 1.0 * 0.447
+        self.controller = Controller(wheelBase=wheel_base,
+                                     steerRatio=steer_ratio,
+                                     minimumSpeed=minSpeed,
+                                     maximumLateralAcceleration=max_lat_accel,
+                                     maximumSteeringAngle=max_steer_angle,
+                                     throttleKsOfPid=throttle_ksofpid,
+                                     steeringKsOfPid=steering_ksofpid,
+                                     accelerationLimit=accel_limit,
+                                     deaccelerationLimit=decel_limit)
 
         # Subscriptions
         rospy.Subscriber('/dbw_enabled', Bool, self.dbwEnabledCallback)
-        rospy.Subscriber('/current_velocity', TwistStamped, self.currentVelocityCallback, queue_size=1)
-        rospy.Subscriber('/twist_cmd', TwistStamped, self.twistCommandCallback, queue_size=1)
+        rospy.Subscriber('/current_velocity', TwistStamped,
+                         self.currentVelocityCallback, queue_size=1)
+        rospy.Subscriber('/twist_cmd', TwistStamped, self.twistCommandCallback,
+                         queue_size=1)
 
         # Member vars
         self.dbwEnabled = True
@@ -61,17 +68,22 @@ class DBWNode(object):
         self.twistCommand = None
         self.loop()
 
-
     def loop(self):
-        rate = rospy.Rate(10) # 50Hz
+        # 50Hz
+        rate = rospy.Rate(10)
         while not rospy.is_shutdown():
-        
-            #Safe-check
+
+            # Safe-check
             if self.twistCommand is None or self.currentVelocity is None:
                 continue
 
-            #Using PID Controller to predict next values for Throttle, Brake and Steering, to be published to throttle_cmd, brake_cmd and steering_cmd as ThrottleCmd, BrakeCmd and SteeringCmd types of messages
-            throttle, brake, steering = self.controller.control(self.twistCommand.twist.linear,
+            ''' Using PID Controller to predict next values for Throttle, Brake
+                and Steering, to be published to throttle_cmd, brake_cmd and
+                steering_cmd as ThrottleCmd, BrakeCmd and SteeringCmd types of
+                messages
+            '''
+            throttle, brake, steering = self.controller.control(
+                self.twistCommand.twist.linear,
                 self.twistCommand.twist.angular,
                 self.currentVelocity.twist.linear,
                 self.dbwEnabled)
@@ -81,27 +93,32 @@ class DBWNode(object):
             rate.sleep()
 
     def publish(self, throttle, brake, steer):
-        #Normally a car is driven with either the gas or the brake pedal pressed. This way, the throttle command with steering will be sent OR the brake command with the steering. Never throttle and brake at the same time
+        ''' Normally a car is driven with either the gas or the brake pedal
+            pressed. This way, the throttle command with steering will be
+            sent OR the brake command with the steering. Never throttle and
+            brake at the same time
+        '''
         if throttle != 0:
             tcmd = ThrottleCmd()
             tcmd.enable = True
             tcmd.pedal_cmd_type = ThrottleCmd.CMD_PERCENT
             tcmd.pedal_cmd = throttle
             self.throttle_pub.publish(tcmd)
-            #rospy.loginfo("Throttle %f and Steering %f being published...", throttle, steer)
+            # rospy.loginfo("Throttle %f and Steering %f being published...",
+            # throttle, steer)
         else:
             bcmd = BrakeCmd()
             bcmd.enable = True
             bcmd.pedal_cmd_type = BrakeCmd.CMD_TORQUE
             bcmd.pedal_cmd = brake
             self.brake_pub.publish(bcmd)
-            #rospy.loginfo("Brake %f and Steering %f being published...", throttle, steer)
+            # rospy.loginfo("Brake %f and Steering %f being published...",
+            # throttle, steer)
 
         scmd = SteeringCmd()
         scmd.enable = True
         scmd.steering_wheel_angle_cmd = steer
         self.steer_pub.publish(scmd)
-
 
     def dbwEnabledCallback(self, msg):
         self.dbwEnabled = msg
@@ -111,8 +128,6 @@ class DBWNode(object):
 
     def twistCommandCallback(self, msg):
         self.twistCommand = msg
-
-
 
 if __name__ == '__main__':
     DBWNode()
