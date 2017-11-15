@@ -3,6 +3,7 @@
 
 <p align="center">
 	<img width="650" height="450" src="https://github.com/TheAisBack/CarND-Capstone/blob/master/imgs/self-driving.png"><br>
+  Team Name <br>
 	<img width="550" height="100" src="https://github.com/TheAisBack/CarND-Capstone/blob/master/imgs/logo.png">
 </p>
 
