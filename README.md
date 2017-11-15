@@ -18,6 +18,8 @@ This is the project repo for the final project of the Udacity Self-Driving Car N
 
 # Final Project
 
+Here is the archetect of the self-driving car
+
 <p align="center">
 	<img src="https://github.com/TheAisBack/CarND-Capstone/blob/master/imgs/Final-Poject-ROS.png">
 </p>
@@ -28,7 +30,14 @@ This is the project repo for the final project of the Udacity Self-Driving Car N
 	<img src="https://github.com/TheAisBack/CarND-Capstone/blob/master/imgs/TL-Detector.png">
 </p>
 
+### def imageColorCallback(self, msg):
+This function helps find the color of the traffic light, so that the software can therefore use this information in other functions to trigger acceleration, deceleration, etc.
+
 ### def get_closest_waypoint(self, pose):
+This function finds the closet waypoint for the car, this will help the vehicle to make sure its on course and find the next traffic light.
+
+### def get_light_state(self, light):
+This function helps to establish which light states which action the car shall do.
 
 ### def process_traffic_lights(self):
 This function helps in establishing where the closest visible traffic light is located, if the traffic light exist. Once the traffic light is found the function returns the state of that traffic light.
