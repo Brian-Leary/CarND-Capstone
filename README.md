@@ -3,7 +3,9 @@
 
 ![alt text](https://github.com/TheAisBack/CarND-Capstone/blob/master/imgs/self-driving.png "Self-Driving Car")
 
-![alt text]<p align="center"><img width="460" height="100" src="https://github.com/TheAisBack/CarND-Capstone/blob/master/imgs/logo.png" "Roadhammer"></p>
+<p align="center">
+	<img width="460" height="100" src="https://github.com/TheAisBack/CarND-Capstone/blob/master/imgs/logo.png">
+</p>
 
 <p align="center">
   <img width="460" height="300" src="http://www.fillmurray.com/460/300">
