@@ -36,85 +36,152 @@ Here is the architecture diagram of the self-driving car, which will help us cre
 
 The System Architecture comprises of the following subsystems:
 
-##Perception: subsystem responsible for the detection of the traffic lights, the car should be able to visualize the traffic light signs and characterize it as a green, red or yellow light. The folder tl_detector in this repo contains the files needed for implementation of this subsystem:
-###tl_detector.py:
+## Perception:
+
+subsystem responsible for the detection of the traffic lights, the car should be able to visualize the traffic light signs and characterize it as a green, red or yellow light. The folder tl_detector in this repo contains the files needed for implementation of this subsystem:
+
+### tl_detector.py:
+
 this python script is basically responsible for calling the TLClassifier class, that is able to understand the traffic light signs, and contains the following ROS subscribers and publishers:
-####'/current_pose':
+
+#### '/current_pose':
+
 subscription, current position of the car.
-####'/base_waypoints':
+
+#### '/base_waypoints':
+
 subscription, waypoints of the simulator track.
-####'/vehicle/traffic_lights':
+
+#### '/vehicle/traffic_lights':
+
 subscription, location of the traffic lights in 3D map space.
-####'/image_color':
+
+#### '/image_color':
+
 subscription, contains the image captured by the car's camera for traffic light classification.
-####'/all_traffic_waypoint':
+
+#### '/all_traffic_waypoint':
+
 publisher, contains the status of the traffic lights.
-###light_classification/tl_classifier.py:
+
+### light_classification/tl_classifier.py:
+
 python script that implements the TLClassifier class, the following methods for this class are worth mentioning:
-####def setupGraphForTrafficLightLocalization(self):
-this function is responsible for loading a Deep Neural Network that is being used for the traffic lights classification, the SSD w/ MobileNet trained with the COCO dataset. This neural network is presented by the [Tensorflow Object Detection API](https://github.com/tensorflow/models/tree/master/research/object_detection), and contains dozens of different object classes for detection. For this project, just class '10' is of interest, the traffic light object class.
-####def locateTrafficLightsOnFrame(self, image, visual=False):
-responsible for using the image provided by the car's camera to locate the traffic lights on it, making use of the Neural Network described above. This function returns rectangles, that surround and gives information of the position of the traffic light detected.
-####def classifyTrafficLightState(self,image):
-using the rectangle provided above, the tl_detector.py script separates and resizes a new image 32x32 that contains just the traffic light sign. That image is used in this function, that basically applies three HSV masks for green, yellow and red. Then, these masks have their pixels counted, and the mask that has more pixels probably represents the color of the traffic light. For example, if the mask_red has more pixels than mask_yellow or mask_green, probably the light is red.
+
+#### def setupGraphForTrafficLightLocalization(self):
+
+This function is responsible for loading a Deep Neural Network that is being used for the traffic lights classification, the SSD w/ MobileNet trained with the COCO dataset. This neural network is presented by the [Tensorflow Object Detection API](https://github.com/tensorflow/models/tree/master/research/object_detection), and contains dozens of different object classes for detection. For this project, just class '10' is of interest, the traffic light object class.
+
+#### def locateTrafficLightsOnFrame(self, image, visual=False):
+
+Responsible for using the image provided by the car's camera to locate the traffic lights on it, making use of the Neural Network described above. This function returns rectangles, that surround and gives information of the position of the traffic light detected.
+
+#### def classifyTrafficLightState(self,image):
+
+Using the rectangle provided above, the tl_detector.py script separates and resizes a new image 32x32 that contains just the traffic light sign. That image is used in this function, that basically applies three HSV masks for green, yellow and red. Then, these masks have their pixels counted, and the mask that has more pixels probably represents the color of the traffic light. For example, if the mask_red has more pixels than mask_yellow or mask_green, probably the light is red.
 
 <p align="center">
 	<img src="https://github.com/TheAisBack/CarND-Capstone/blob/master/imgs/TL-Detector.png">
 </p>
 
-##Planning:
+## Planning:
+
 subsystem responsible for taking into consideration the information provided by the Perception subsystem, and current car information, to decide a further course of action for the car. The folder waypoint_updater contains one python script used for that matter.
-###waypoint_updater.py:
+
+### waypoint_updater.py:
+
 this python script uses the following:
-####'/current_pose':
+
+#### '/current_pose':
+
 subscription.
-####'/base_waypoints':
+
+#### '/base_waypoints':
+
 subscription.
-####'/all_traffic_waypoint':
+
+#### '/all_traffic_waypoint':
+
 subscription.
-####'/current_velocity':
+
+#### '/current_velocity':
+
 subscription, contains the current velocity of the car.
-####'/final_waypoints':
+
+#### '/final_waypoints':
+
 publisher, contains the list of waypoints that are given to the Control subsytem, that uses it to drive the car.
-####def publishNextWaypoints(self):
+
+#### def publishNextWaypoints(self):
+
 that function is worth mentioning, it basically uses the subscriptions described above to return the list of waypoints to be published to '/final_waypoints'. This function starts by finding the closest waypoint to the vehicle, next this waypoint is considered first in the following list of next waypoints, then the traffic light location and its sign status is used to further decide if the car should be stopping, or accelerating, or maintaing velocity. Finally, these decisions are all implemented as the next waypoints list that is returned by this function.
 
 <p align="center">
 	<img src="https://github.com/TheAisBack/CarND-Capstone/blob/master/imgs/Waypoint-Updater.png"><br>
 </p>
 
+## Control
 
-##Control
 subsystem responsible for using the waypoints provided by the Planning subsystem, and current car information, to publish messages that are used by the simulator, related directly to control of the car. The folder twist_controller contains python scripts related to this subsystem:
 
-###dbw_node.py:
+### dbw_node.py:
+
 this python script uses several ros parameters, subscribers and publishers such as:
-####'~vehicle_mass':
+
+#### '~vehicle_mass':
+
 contains the car mass.
-####'~fuel_capacity':
+
+#### '~fuel_capacity':
+
 fuel capacity of the car.
-####'~max_lat_accel':
+
+#### '~max_lat_accel':
+
 maximum lateral acceleration of the car.
-####'~max_steer_angle': maximum steering angle of the car.
-####'~throttle_Kp':
+
+#### '~max_steer_angle':
+
+maximum steering angle of the car.
+
+#### '~throttle_Kp':
+
 Kp value for PID controller of the throttle.
-####'~throttle_Ki':
+
+#### '~throttle_Ki':
+
 Ki value for PID controller of the throttle.
-####'~throttle_Kd':
+
+#### '~throttle_Kd':
+
 Kd value for PID controller of the throttle.
-####'/current_velocity':
+
+#### '/current_velocity':
+
 subscription.
-####'/dbw_enabled':
+
+#### '/dbw_enabled':
+
 subscription, contains information if the Drive-by-wire (DBW) system is enabled.
-####'/twist_cmd':
+
+#### '/twist_cmd':
+
 subscription, published by the waypoint_follower/pure_pursuit.cpp provided script.
-####'/vehicle/steering_cmd':
+
+#### '/vehicle/steering_cmd':
+
 publisher, contains a SteeringCmd type ROS message, that is used by the simulator for steering of the car.
-####'/vehicle/throttle_cmd':
+
+#### '/vehicle/throttle_cmd':
+
 publisher, contains a ThrottleCmd type ROS message, that is used by the simulator for throttling of the car.
-####'/vehicle/brake_cmd':
+
+#### '/vehicle/brake_cmd':
+
 publisher, contains a BrakeCmd type ROS message, that is used by the simulator for braking of the car.
-####def publish(self, throttle, brake, steer):
+
+#### def publish(self, throttle, brake, steer):
+
 worth mentioning, this function uses the throttle, brake and steering variables provided by the Controller class from twist_controller.py to preprocess and decide which control variables are of interest and then published. For example, normally a driver wouldn't use the brake and throttle pedals at the same time. So, in this function, it first sees if the throttle provided by the controller in non-zero, if so, just throttle and steering are published. Otherwise, just the brake command will be published along with the steering.
 
 ## Twist Controller
