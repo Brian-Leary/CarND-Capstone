@@ -198,7 +198,7 @@ This function is worth mentioning because it calculates the errors described abo
 
 ## Simulator Output
 
-Change this once file is uploaded
+Here is our output from the simulator.
 
 [![Self-Driving Car](https://github.com/TheAisBack/CarND-Capstone/blob/master/imgs/Self_Driving_Car.png)](https://www.youtube.com/watch?v=jIykmJD2Dl8 "Udacity Self-Driving Car")
 
