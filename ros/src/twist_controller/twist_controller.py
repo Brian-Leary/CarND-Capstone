@@ -4,24 +4,27 @@ from pid import PID
 import time
 import rospy
 
-# 1 mph = 0.44704 m/s
-ONE_MPH = 0.44704
-# In mph
-MAX_SPEED = 40.0
+
+ONE_MPH = 0.44704 #1 mph = 0.44704 m/s
+MAX_SPEED = 40.0 #in mph
 
 
 class Controller(object):
     def __init__(self, *args, **kwargs):
 
         self.throttle_pid = PID(kwargs['throttleKsOfPid'])
-        self.yaw_control = YawController(kwargs['wheelBase'], kwargs['steerRatio'], kwargs['minimumSpeed'], kwargs['maximumLateralAcceleration'], kwargs['maximumSteeringAngle'], kwargs['steeringKsOfPid'])
+        self.yaw_control = YawController(kwargs['wheelBase'], kwargs['steerRatio'],
+                                         kwargs['minimumSpeed'], kwargs['maximumLateralAcceleration'],
+                                         kwargs['maximumSteeringAngle'],
+                                         kwargs['steeringKsOfPid']
+                                         )
         self.lastTime = None
         self.accelerationLimit = kwargs['accelerationLimit']
         self.deaccelerationLimit = kwargs['deaccelerationLimit']
-        self.filter = LowPassFilter(0.2, 0.1)
+        self.filter = LowPassFilter(0.2,0.1)
 
-    def control(self, twistCommandLinear, twistCommandAngular,
-                currentVelocityLinear, dbwEnabled):
+
+    def control(self, twistCommandLinear, twistCommandAngular, currentVelocityLinear, dbwEnabled):
         if self.lastTime is None or not dbwEnabled:
             self.lastTime = rospy.get_time()
             return 0.0, 0.0, 0.0

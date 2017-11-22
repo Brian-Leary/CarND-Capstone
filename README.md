@@ -84,14 +84,17 @@ This init function is important to point out as we are establishing the yaw_cont
 ### def control(self, *args, **kwargs):
 This function changes the arguments of throttle, brake and steer to your liking.
 
-# Perception, Planning, Control
-
 # Simulator Output
+
+Change this once file is uploaded
+
+[![Everything Is AWESOME](https://img.youtube.com/vi/StTqXEQ2l-Y/0.jpg)](https://www.youtube.com/watch?v=StTqXEQ2l-Y "Everything Is AWESOME")
 
 # Real Life Output
 
-# Conclusion
-The final Product
+Change this once file is uploaded
+
+[![Everything Is AWESOME](https://img.youtube.com/vi/StTqXEQ2l-Y/0.jpg)](https://www.youtube.com/watch?v=StTqXEQ2l-Y "Everything Is AWESOME")
 
 # How to Install Software
 
